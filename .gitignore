@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual env
+.venv/
+
+# Local DB & env files
+expenses.db
+.env
+.env.*
+
+# VS Code (optional)
+.vscode/

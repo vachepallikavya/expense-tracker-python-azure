@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Expenses</h1>
+
+<form method="get" class="filters">
+  <input type="date" name="start_date" placeholder="Start date">
+  <input type="date" name="end_date" placeholder="End date">
+  <input type="text" name="category" placeholder="Category">
+  <button type="submit">Filter</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Category</th>
+      <th>Description</th>
+      <th>Payment</th>
+      <th class="right">Amount ($)</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for e in expenses %}
+    <tr>
+      <td>{{ e.date.strftime('%Y-%m-%d') }}</td>
+      <td>{{ e.category }}</td>
+      <td>{{ e.description }}</td>
+      <td>{{ e.payment_method }}</td>
+      <td class="right">{{ '%.2f'|format(e.amount) }}</td>
+      <td>
+        <a href="{{ url_for('edit_expense', expense_id=e.id) }}">Edit</a>
+        <form method="post" action="{{ url_for('delete_expense', expense_id=e.id) }}" style="display:inline" onsubmit="return confirm('Delete this expense?')">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6">No expenses yet. Add one!</td></tr>
+  {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4" class="right"><strong>Total</strong></td>
+      <td class="right"><strong>{{ '%.2f'|format(total) }}</strong></td>
+      <td></td>
+    </tr>
+  </tfoot>
+</table>
+{% endblock %}

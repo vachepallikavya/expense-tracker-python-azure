@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Add Expense</h1>
+<form method="post" class="form">
+  <label>Date <input type="date" name="date"></label>
+  <label>Category <input type="text" name="category" required></label>
+  <label>Description <input type="text" name="description"></label>
+  <label>Payment Method <input type="text" name="payment_method"></label>
+  <label>Amount <input type="number" name="amount" step="0.01" required></label>
+  <button type="submit">Save</button>
+  <a class="btn" href="{{ url_for('index') }}">Cancel</a>
+</form>
+{% endblock %}
