@@ -1,5 +1,7 @@
+app-name: TRACKER
 
-name: Build and Deploy to Azure WebApp
+python-version: '3.10'
+package: .
 
 on:
   push:
