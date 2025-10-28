@@ -9,11 +9,20 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add_expense():
-    expenses.append({
-        'name': request.form['name'],
-        'amount': request.form['amount']
-    })
+    name = request.form.get('name')
+    amount = request.form.get('amount')
+    if name and amount:
+        expenses.append({
+            'name': name,
+            'amount': amount
+        })
     return redirect('/')
+@app.route('/test')
+def test():
+    return "<h1>Hello Flask!</h1>"
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
+
+
