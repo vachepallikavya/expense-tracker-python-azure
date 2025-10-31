@@ -12,13 +12,15 @@ def add_expense():
     name = request.form.get('name')
     amount = request.form.get('amount')
     item_type = request.form.get('item_type')
+    payment_type = request.form.get('payment_type')
     
-    if name and amount and item_type:
+    if name and amount and item_type and payment_type:
         expenses.append({
             'sn': len(expenses) + 1,
             'name': name,
             'amount': amount,
-            'item_type': item_type
+            'item_type': item_type,
+            'payment_type': payment_type
         })
     
     return redirect('/')
