@@ -11,12 +11,18 @@ def index():
 def add_expense():
     name = request.form.get('name')
     amount = request.form.get('amount')
-    if name and amount:
+    item_type = request.form.get('item_type')
+    
+    if name and amount and item_type:
         expenses.append({
+            'sn': len(expenses) + 1,
             'name': name,
-            'amount': amount
+            'amount': amount,
+            'item_type': item_type
         })
+    
     return redirect('/')
+
 @app.route('/test')
 def test():
     return "<h1>Hello Flask!</h1>"

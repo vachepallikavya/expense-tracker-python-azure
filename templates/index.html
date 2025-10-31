@@ -5,16 +5,39 @@
 </head>
 <body>
     <h1>Expense Tracker</h1>
+
+    <!-- Expense Form -->
     <form action="/add" method="post">
-        Name: <input type="text" name="name" required>
-        Amount: <input type="number" name="amount" required>
-        <button type="submit">Add</button>
+        <input type="text" name="name" placeholder="Expense Name" required>
+        <input type="number" name="amount" placeholder="Amount" required>
+        <input type="text" name="item_type" placeholder="Item Type" required>
+        <button type="submit">Add Expense</button>
     </form>
-    <h2>Expenses:</h2>
-    <ul>
-        {% for expense in expenses %}
-            <li>{{ expense.name }} - ${{ expense.amount }}</li>
-        {% endfor %}
-    </ul>
+
+    <h2>Expenses List</h2>
+
+    <!-- Expenses Table -->
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>S.N</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Item Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.sn }}</td>
+                <td>{{ expense.name }}</td>
+                <td>${{ expense.amount }}</td>
+                <td>{{ expense.item_type }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 </body>
 </html>
+

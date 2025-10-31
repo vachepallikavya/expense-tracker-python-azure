@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\PC34\Desktop\Final_DevOps_Pro\expense-tracker-python-azure\venv"
+set "VIRTUAL_ENV=C:\Users\PC34\Desktop\expense-tracker-python-azure\venv"
 
 if not defined PROMPT set PROMPT=$P$G
 
