@@ -2,135 +2,78 @@
 <html>
 <head>
     <title>Expense Tracker</title>
-
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
-<h1>Expense Tracker</h1>
+    <h1>Expense Tracker</h1>
 
-<!-- Add Expense Form -->
-<form action="/add" method="post">
-    <input type="text" name="name" placeholder="Expense Name" required>
-    <input type="number" step="0.01" name="amount" placeholder="Amount" required>
+    <form action="/add" method="post">
+        <input type="text" name="name" placeholder="Expense Name" required>
+        <input type="number" name="amount" placeholder="Amount" required>
 
-    <select name="category" required>
-        <option value="">Select Category</option>
-        <option>Food</option>
-        <option>Shopping</option>
-        <option>Transport</option>
-        <option>Utilities</option>
-        <option>Other</option>
-    </select>
+        <select name="item_type" required>
+            <option value="" disabled selected>Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Bills">Bills</option>
+            <option value="Entertainment">Entertainment</option>
+        </select>
 
-    <select name="payment" required>
-        <option value="">Payment Type</option>
-        <option>Cash</option>
-        <option>Card</option>
-        <option>Online</option>
-    </select>
+        <select name="payment_type" required>
+            <option value="" disabled selected>Payment Type</option>
+            <option value="Cash">Cash</option>
+            <option value="Card">Card</option>
+            <option value="UPI">UPI</option>
+        </select>
 
-    <input type="date" name="date" required>
+        <button type="submit">Add Expense</button>
+    </form>
 
-    <button type="submit">Add Expense</button>
-</form>
+    <h2>Expenses:</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>S.N</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Payment Type</th>
+        </tr>
+        {% for expense in expenses %}
+        <tr>
+            <td>{{ expense.sn }}</td>
+            <td>{{ expense.name }}</td>
+            <td>{{ expense.amount }}</td>
+            <td>{{ expense.item_type }}</td>
+            <td>{{ expense.payment_type }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-<br><hr><br>
+    <h2>Expense Distribution</h2>
+    <canvas id="expenseChart" width="400" height="400"></canvas>
 
-<!-- Filter Form -->
-<form method="get">
-    <input type="date" name="date">
+    <script>
+        var labels = {{ labels | safe }};
+        var data = {{ data | safe }};
 
-    <select name="category">
-        <option value="All">All Categories</option>
-        <option>Food</option>
-        <option>Shopping</option>
-        <option>Transport</option>
-        <option>Utilities</option>
-        <option>Other</option>
-    </select>
+        console.log(labels, data);
 
-    <select name="payment_type">
-        <option value="All">All Payment Types</option>
-        <option>Cash</option>
-        <option>Card</option>
-        <option>Online</option>
-    </select>
-
-    <button type="submit">Filter</button>
-</form>
-
-<br>
-
-<!-- Expense Table -->
-<table border="1">
-    <tr>
-        <th>S.N</th>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>Category</th>
-        <th>Payment</th>
-        <th>Date</th>
-    </tr>
-
-    {% for expense in expenses %}
-    <tr>
-        <td>{{ expense.sn }}</td>
-        <td>{{ expense.name }}</td>
-        <td>${{ expense.amount }}</td>
-        <td>{{ expense.category }}</td>
-        <td>{{ expense.payment }}</td>
-        <td>{{ expense.date }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<br><hr><br>
-
-<!-- Dashboard -->
-<h2>Expense Dashboard</h2>
-<canvas id="categoryChart" width="400" height="200"></canvas>
-
-<!-- Chart Script -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    // ✅ Data from Flask
-    const labels = {{ chart_labels | tojson }};
-    const data = {{ chart_values | tojson }};
-
-    console.log("Chart Labels:", labels);
-    console.log("Chart Data:", data);
-
-    if (labels.length > 0) {
-        const ctx = document.getElementById("categoryChart").getContext("2d");
-
+        var ctx = document.getElementById('expenseChart').getContext('2d');
         new Chart(ctx, {
-            type: "pie",
+            type: 'pie',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: "Expenses by Category",
-                    data: data,
-                    backgroundColor: [
-                        "#FF6384","#36A2EB","#FFCE56",
-                        "#4BC0C0","#9966FF","#FF9F40"
-                    ]
+                    data: data
                 }]
-            },
-            options: {
-                responsive: true
             }
         });
-
-    } else {
-        console.log("⚠️ No chart data yet — add expenses first");
-    }
-});
-</script>
+    </script>
 
 </body>
 </html>
+
+
 
 
