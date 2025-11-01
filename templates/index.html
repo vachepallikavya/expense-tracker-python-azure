@@ -2,7 +2,11 @@
 <html>
 <head>
     <title>Expense Tracker</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 <h1>Expense Tracker</h1>
 
@@ -37,7 +41,7 @@
 <!-- Filter Form -->
 <form method="get">
     <input type="date" name="date">
-    
+
     <select name="category">
         <option value="All">All Categories</option>
         <option>Food</option>
@@ -59,7 +63,7 @@
 
 <br>
 
-<!-- Display Table -->
+<!-- Expense Table -->
 <table border="1">
     <tr>
         <th>S.N</th>
@@ -82,6 +86,51 @@
     {% endfor %}
 </table>
 
+<br><hr><br>
+
+<!-- Dashboard -->
+<h2>Expense Dashboard</h2>
+<canvas id="categoryChart" width="400" height="200"></canvas>
+
+<!-- Chart Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ✅ Data from Flask
+    const labels = {{ chart_labels | tojson }};
+    const data = {{ chart_values | tojson }};
+
+    console.log("Chart Labels:", labels);
+    console.log("Chart Data:", data);
+
+    if (labels.length > 0) {
+        const ctx = document.getElementById("categoryChart").getContext("2d");
+
+        new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Expenses by Category",
+                    data: data,
+                    backgroundColor: [
+                        "#FF6384","#36A2EB","#FFCE56",
+                        "#4BC0C0","#9966FF","#FF9F40"
+                    ]
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+    } else {
+        console.log("⚠️ No chart data yet — add expenses first");
+    }
+});
+</script>
+
 </body>
 </html>
+
 

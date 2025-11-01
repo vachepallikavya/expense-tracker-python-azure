@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect
+from collections import defaultdict
 
 app = Flask(__name__)
 expenses = []
@@ -7,13 +8,12 @@ expenses = []
 def index():
     filtered = expenses
 
-    # Filters applied if method GET + query params exist
+    # Handle filters
     if request.method == 'GET':
         date = request.args.get('date')
         category = request.args.get('category')
         payment_type = request.args.get('payment_type')
 
-        # Apply filters
         if date:
             filtered = [e for e in filtered if e['date'] == date]
         if category and category != "All":
@@ -21,7 +21,20 @@ def index():
         if payment_type and payment_type != "All":
             filtered = [e for e in filtered if e['payment'] == payment_type]
 
-    return render_template('index.html', expenses=filtered)
+    # Dashboard Summary: Category totals for pie chart
+    category_totals = defaultdict(float)
+    for e in filtered:
+        category_totals[e['category']] += float(e['amount'])
+
+    chart_labels = list(category_totals.keys())
+    chart_values = list(category_totals.values())
+
+    return render_template(
+        'index.html',
+        expenses=filtered,
+        chart_labels=chart_labels,
+        chart_values=chart_values
+    )
 
 @app.route('/add', methods=['POST'])
 def add_expense():
@@ -49,6 +62,7 @@ def test():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
