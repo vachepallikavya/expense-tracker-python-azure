@@ -31,7 +31,7 @@ def add_expense():
             'amount': float(amount),
             'item_type': item_type,
             'payment_type': payment_type,
-            'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # consistent date format
+            'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
 
     return redirect('/')
@@ -56,3 +56,4 @@ def test():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

@@ -12,7 +12,6 @@
     <input type="text" name="name" placeholder="Expense Name" required>
     <input type="number" name="amount" placeholder="Amount" required>
 
-    <!-- Category Select (Better UX) -->
     <select name="item_type" required>
         <option value="" disabled selected>Select Category</option>
         <option value="Food">Food</option>
@@ -23,7 +22,6 @@
         <option value="Other">Other</option>
     </select>
 
-    <!-- Payment Type -->
     <select name="payment_type" required>
         <option value="" disabled selected>Payment Type</option>
         <option value="Cash">Cash</option>
@@ -38,41 +36,38 @@
 <br>
 
 <!-- ✅ Export CSV Button -->
-<a href="/export">
-    <button type="button">Export to CSV</button>
-</a>
+<a href="/export"><button type="button">Export to CSV</button></a>
 
 <hr>
 
 <h2>Expenses</h2>
 <table border="1" cellpadding="5">
-    <thead>
-        <tr>
-            <th>S.N</th>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Payment Type</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for expense in expenses %}
-        <tr>
-            <td>{{ expense.sn }}</td>
-            <td>{{ expense.name }}</td>
-            <td>{{ expense.amount }}</td>
-            <td>{{ expense.item_type }}</td>
-            <td>{{ expense.payment_type }}</td>
-            <td>{{ expense.date }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+<thead>
+<tr>
+    <th>S.N</th>
+    <th>Name</th>
+    <th>Amount</th>
+    <th>Category</th>
+    <th>Payment Type</th>
+    <th>Date</th>
+</tr>
+</thead>
+<tbody>
+{% for expense in expenses %}
+<tr>
+    <td>{{ expense.sn }}</td>
+    <td>{{ expense.name }}</td>
+    <td>{{ expense.amount }}</td>
+    <td>{{ expense.item_type }}</td>
+    <td>{{ expense.payment_type }}</td>
+    <td>{{ expense.date }}</td>
+</tr>
+{% endfor %}
+</tbody>
 </table>
 
 <hr>
 
-<!-- ✅ Pie Chart -->
 <h2>Expenses by Category</h2>
 <canvas id="expenseChart" width="350" height="350"></canvas>
 
@@ -98,5 +93,3 @@
 
 </body>
 </html>
-
-
