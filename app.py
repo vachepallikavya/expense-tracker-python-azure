@@ -6,11 +6,11 @@ expenses = []
 
 @app.route('/')
 def index():
-    # Create category totals for pie chart
+    # Prepare chart data (group expenses by category)
     category_totals = {}
     for expense in expenses:
         category = expense['item_type']
-        category_totals[category] = category_totals.get(category, 0) + float(expense['amount'])
+        category_totals[category] = category_totals.get(category, 0) + expense['amount']
 
     labels = list(category_totals.keys())
     data = list(category_totals.values())
@@ -24,7 +24,7 @@ def add_expense():
     item_type = request.form.get('item_type')
     payment_type = request.form.get('payment_type')
 
-    if name and amount and item_type:
+    if name and amount and item_type and payment_type:
         expenses.append({
             'sn': len(expenses) + 1,
             'name': name,
@@ -36,9 +36,9 @@ def add_expense():
 
     return redirect('/')
 
-# ✅ Export CSV feature
 @app.route('/export')
 def export_csv():
+    """Generate and download expenses as CSV"""
     def generate():
         data = ["S.N,Name,Amount,Category,Payment Type,Date\n"]
         for e in expenses:
@@ -52,7 +52,7 @@ def export_csv():
 
 @app.route('/test')
 def test():
-    return "<h1>Hello Flask!</h1>"
+    return "<h1>Flask App Running Successfully ✅</h1>"
 
 if __name__ == '__main__':
     app.run(debug=True)
