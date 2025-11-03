@@ -67,10 +67,10 @@
       margin-right: auto;
     }
 
-    /* ✅ Chart responsiveness */
+    /* ✅ Chart container for better sizing */
     #chart-container {
-      max-width: 600px;
-      margin: 30px auto;
+      max-width: 800px;  /* adjustable chart size */
+      margin: 40px auto;
     }
 
     canvas {
@@ -78,7 +78,6 @@
       height: auto !important;
     }
 
-    /* ✅ Small screen adjustments */
     @media (max-width: 768px) {
       form {
         flex-direction: column;
@@ -150,7 +149,7 @@
     </tbody>
   </table>
 
-  <!-- Responsive Pie Chart -->
+  <!-- Pie Chart Section -->
   <h2>Expenses by Category</h2>
   <div id="chart-container">
     <canvas id="expenseChart"></canvas>
@@ -177,7 +176,12 @@
         },
         options: {
           responsive: true,
-          maintainAspectRatio: true
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
         }
       });
     } else {
@@ -186,3 +190,5 @@
   </script>
 </body>
 </html>
+
+
