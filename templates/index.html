@@ -10,12 +10,13 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
-      background-color: #f9f9f9;
-      color: #333;
+      background-color: #000000; /* ✅ Black background */
+      color: #ffffff; /* ✅ White font */
     }
 
     h1, h2 {
       text-align: center;
+      color: #ffffff; /* White headings */
     }
 
     form {
@@ -28,14 +29,17 @@
 
     input, select, button {
       padding: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #555;
       border-radius: 5px;
+      background-color: #222; /* Dark input background */
+      color: #fff;
     }
 
     button {
       background-color: #4CAF50;
       color: white;
       cursor: pointer;
+      border: none;
     }
 
     button:hover {
@@ -45,19 +49,21 @@
     table {
       border-collapse: collapse;
       width: 100%;
-      background-color: white;
+      background-color: #111; /* Dark table background */
       margin-top: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
     }
 
     th, td {
-      border: 1px solid #ddd;
+      border: 1px solid #444;
       padding: 10px;
       text-align: center;
+      color: #fff;
     }
 
     th {
-      background-color: #f2f2f2;
+      background-color: #222;
+      color: #00ff99; /* Optional accent color for table headers */
     }
 
     a button {
@@ -67,10 +73,12 @@
       margin-right: auto;
     }
 
-    /* ✅ Chart container for better sizing */
     #chart-container {
-      max-width: 800px;  /* adjustable chart size */
+      max-width: 800px;
       margin: 40px auto;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 10px;
     }
 
     canvas {
@@ -152,43 +160,4 @@
   <!-- Pie Chart Section -->
   <h2>Expenses by Category</h2>
   <div id="chart-container">
-    <canvas id="expenseChart"></canvas>
-  </div>
-
-  <script>
-    const chartLabels = {{ labels | tojson }};
-    const chartData = {{ data | tojson }};
-
-    if (chartLabels.length > 0) {
-      const ctx = document.getElementById('expenseChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: chartLabels,
-          datasets: [{
-            label: 'Expense Breakdown',
-            data: chartData,
-            backgroundColor: [
-              '#FF6384', '#36A2EB', '#FFCE56',
-              '#4BC0C0', '#9966FF', '#FF9F40'
-            ]
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }
-      });
-    } else {
-      document.write("<p style='text-align:center;'>No data to display chart yet.</p>");
-    }
-  </script>
-</body>
-</html>
-
-
+    <canvas id
