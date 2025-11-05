@@ -7,78 +7,114 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    /* ===== GLOBAL STYLE (Light Theme) ===== */
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #000000; /* ✅ Black background */
-      color: #ffffff; /* ✅ White font */
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff; /* ✅ White background */
+      color: #000000; /* ✅ Black text */
+      line-height: 1.6;
     }
 
-    h1, h2 {
+    header {
+      background-color: #f8f9fa;
+      padding: 20px;
       text-align: center;
-      color: #ffffff; /* White headings */
+      border-bottom: 2px solid #0d6efd; /* Blue accent */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
 
+    h1 {
+      color: #0d6efd;
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    /* ===== FORM ===== */
     form {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin: 20px 0;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
     }
 
     input, select, button {
-      padding: 8px;
-      border: 1px solid #555;
+      padding: 10px;
       border-radius: 5px;
-      background-color: #222; /* Dark input background */
-      color: #fff;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      color: #000;
+      min-width: 120px;
+    }
+
+    input::placeholder {
+      color: #777;
     }
 
     button {
-      background-color: #4CAF50;
+      background-color: #0d6efd;
       color: white;
+      font-weight: bold;
       cursor: pointer;
       border: none;
+      transition: all 0.3s ease;
     }
 
     button:hover {
-      background-color: #45a049;
+      background-color: #0b5ed7;
+      transform: scale(1.05);
     }
 
+    /* ===== TABLE ===== */
     table {
-      border-collapse: collapse;
       width: 100%;
-      background-color: #111; /* Dark table background */
-      margin-top: 10px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      border-collapse: collapse;
+      background-color: #fff;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     }
 
     th, td {
-      border: 1px solid #444;
-      padding: 10px;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
       text-align: center;
-      color: #fff;
     }
 
     th {
-      background-color: #222;
-      color: #00ff99; /* Optional accent color for table headers */
+      background-color: #f8f9fa;
+      color: #0d6efd;
+      font-weight: bold;
     }
 
-    a button {
-      margin-top: 10px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+    tr:hover {
+      background-color: #f2f2f2;
     }
 
+    /* ===== CHART CONTAINER ===== */
     #chart-container {
-      max-width: 800px;
-      margin: 40px auto;
-      background-color: #111;
-      padding: 20px;
+      background-color: #ffffff;
+      margin: 30px auto;
+      padding: 15px;
       border-radius: 10px;
+      border: 1px solid #ddd;
+      max-width: 450px; /* compact width */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     }
 
     canvas {
@@ -86,143 +122,155 @@
       height: auto !important;
     }
 
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       form {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
       }
 
-      table, th, td {
+      input, select, button {
+        width: 100%;
+      }
+
+      th, td {
         font-size: 14px;
+        padding: 8px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      #chart-container {
+        max-width: 320px;
       }
     }
   </style>
 </head>
+
 <body>
-  <h1>Expense Tracker</h1>
+  <header>
     <h1>Expense Tracker</h1>
+  </header>
 
+  <main>
+    <!-- ===== ADD EXPENSE FORM ===== -->
     <form action="/add" method="post">
-        <input type="text" name="name" placeholder="Expense Name" required>
-        <input type="number" name="amount" placeholder="Amount" required>
+      <input type="text" name="name" placeholder="Expense Name" required />
+      <input type="number" name="amount" placeholder="Amount" required />
 
-        <select name="item_type" required>
-            <option value="" disabled selected>Select Category</option>
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Bills">Bills</option>
-            <option value="Entertainment">Entertainment</option>
-        </select>
+      <select name="item_type" required>
+        <option value="" disabled selected>Select Category</option>
+        <option>Food</option>
+        <option>Transport</option>
+        <option>Shopping</option>
+        <option>Bills</option>
+        <option>Entertainment</option>
+        <option>Other</option>
+      </select>
 
-        <select name="payment_type" required>
-            <option value="" disabled selected>Payment Type</option>
-            <option value="Cash">Cash</option>
-            <option value="Card">Card</option>
-            <option value="UPI">UPI</option>
-        </select>
+      <select name="payment_type" required>
+        <option value="" disabled selected>Payment Type</option>
+        <option>Cash</option>
+        <option>Card</option>
+        <option>UPI</option>
+        <option>Online</option>
+      </select>
 
-        <button type="submit">Add Expense</button>
+      <button type="submit">Add Expense</button>
     </form>
 
-    <h2>Expenses:</h2>
-    <table border="1" cellpadding="5">
+    <!-- ===== EXPORT TO CSV ===== -->
+    <div style="text-align:center; margin:15px;">
+      <a href="/export"><button type="button">Export to CSV</button></a>
+    </div>
+
+    <!-- ===== EXPENSE TABLE ===== -->
+    <h2 style="text-align:center; color:#0d6efd;">Expenses</h2>
+    <table>
+      <thead>
         <tr>
-            <th>S.N</th>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Payment Type</th>
+          <th>S.N</th>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Payment Type</th>
+          <th>Date</th>
         </tr>
+      </thead>
+      <tbody>
         {% for expense in expenses %}
         <tr>
-            <td>{{ expense.sn }}</td>
-            <td>{{ expense.name }}</td>
-            <td>{{ expense.amount }}</td>
-            <td>{{ expense.item_type }}</td>
-            <td>{{ expense.payment_type }}</td>
+          <td>{{ expense.sn }}</td>
+          <td>{{ expense.name }}</td>
+          <td>{{ expense.amount }}</td>
+          <td>{{ expense.item_type }}</td>
+          <td>{{ expense.payment_type }}</td>
+          <td>{{ expense.date }}</td>
         </tr>
         {% endfor %}
+      </tbody>
     </table>
 
-    <h2>Expense Distribution</h2>
-    <canvas id="expenseChart" width="150" height="200"></canvas>
+    <!-- ===== BAR CHART (Light Theme) ===== -->
+    <h2 style="text-align:center; color:#0d6efd; margin-top:30px;">Expenses by Category</h2>
+    <div id="chart-container">
+      <canvas id="expenseChart"></canvas>
+    </div>
+  </main>
 
-    <script>
-        var labels = {{ labels | safe }};
-        var data = {{ data | safe }};
+  <script>
+    const labels = {{ labels | safe }};
+    const data = {{ data | safe }};
+    const ctx = document.getElementById("expenseChart").getContext("2d");
 
-        console.log(labels, data);
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Expenses ($)",
+          data: data,
+          backgroundColor: [
+            "#0d6efd",
+            "#20c997",
+            "#ffc107",
+            "#dc3545",
+            "#6f42c1",
+            "#fd7e14",
+          ],
+          borderColor: "#ffffff",
+          borderWidth: 1,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1.8, /* smaller height */
+        scales: {
+          x: {
+            ticks: { color: "#000000", font: { size: 12 } },
+            grid: { color: "#e9ecef" },
+          },
+          y: {
+            ticks: { color: "#000000", font: { size: 12 } },
+            grid: { color: "#e9ecef" },
+          }
+        },
+        plugins: {
+          legend: { labels: { color: "#000000", font: { size: 12 } } },
+          title: {
+            display: true,
+            text: "Expenses by Category",
+            color: "#0d6efd",
+            font: { size: 14 },
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
 
-        var ctx = document.getElementById('expenseChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: data
-                }]
-            }
-        });
-    </script>
 
-  <!-- Form to Add New Expense -->
-  <form action="/add" method="post">
-    <input type="text" name="name" placeholder="Expense Name" required>
-    <input type="number" name="amount" placeholder="Amount" required>
-
-    <select name="item_type" required>
-      <option value="" disabled selected>Select Category</option>
-      <option value="Food">Food</option>
-      <option value="Transport">Transport</option>
-      <option value="Shopping">Shopping</option>
-      <option value="Bills">Bills</option>
-      <option value="Entertainment">Entertainment</option>
-      <option value="Other">Other</option>
-    </select>
-
-    <select name="payment_type" required>
-      <option value="" disabled selected>Payment Type</option>
-      <option value="Cash">Cash</option>
-      <option value="Card">Card</option>
-      <option value="Online">Online</option>
-      <option value="UPI">UPI</option>
-    </select>
-
-    <button type="submit">Add Expense</button>
-  </form>
-
-  <!-- Export CSV Button -->
-  <a href="/export"><button type="button">Export to CSV</button></a>
-
-  <!-- Expense Table -->
-  <h2>Expenses</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>S.N</th>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>Category</th>
-        <th>Payment Type</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for expense in expenses %}
-      <tr>
-        <td>{{ expense.sn }}</td>
-        <td>{{ expense.name }}</td>
-        <td>{{ expense.amount }}</td>
-        <td>{{ expense.item_type }}</td>
-        <td>{{ expense.payment_type }}</td>
-        <td>{{ expense.date }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <!-- Pie Chart Section -->
-  <h2>Expenses by Category</h2>
-  <div id="chart-container">
-    <canvas id

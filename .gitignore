@@ -1,4 +1,37 @@
+# ---- Python ----
 venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# ---- Environment / Secrets ----
+.env
+.env.*
+*.log
+
+# ---- OS / Editor files ----
+.DS_Store
+Thumbs.db
+
+# ---- Visual Studio Code ----
+.vscode/
+*.code-workspace
+
+# ---- Build / Cache ----
+*.egg-info/
+*.spec
+dist/
+build/
+
+# ---- Azure / Deployment ----
+.venv/
+*.zip
+*.bak
+*.tmp
+
+# ---- Jupyter / Notebook ----
+.ipynb_checkpoints/
 
