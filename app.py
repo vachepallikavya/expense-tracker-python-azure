@@ -2,8 +2,10 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-render_template('index.html')
 
+# ---------------------------
+# App setup
+# ---------------------------
 def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY", "dev")
@@ -14,6 +16,9 @@ def create_app():
 app = create_app()
 db = SQLAlchemy(app)
 
+# ---------------------------
+# Database model
+# ---------------------------
 class Expense(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
@@ -25,6 +30,9 @@ class Expense(db.Model):
     def __repr__(self):
         return f"<Expense {self.id} {self.category} {self.amount}>"
 
+# ---------------------------
+# Routes
+# ---------------------------
 @app.route("/", methods=["GET"])
 def index():
     # Filters
@@ -104,6 +112,9 @@ def delete_expense(expense_id):
         flash(f"Error deleting expense: {e}", "error")
     return redirect(url_for("index"))
 
+# ---------------------------
+# CLI command to init database
+# ---------------------------
 @app.cli.command("init-db")
 def init_db():
     """Initialize the database."""
@@ -111,6 +122,8 @@ def init_db():
         db.create_all()
     print("Database initialized")
 
+# ---------------------------
+# Run the app
+# ---------------------------
 if __name__ == "__main__":
-    # For local debug only; Azure uses gunicorn
     app.run(debug=True, host="0.0.0.0", port=5000)
