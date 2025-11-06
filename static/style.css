@@ -1,0 +1,37 @@
+
+/* Dark theme */
+body {
+    background-color: #000;          /* black background */
+    color: #fff;                     /* white text */
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+h1 {
+    color: #00bcd4;                  /* teal accent */
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Buttons */
+button {
+    background-color: #8bd8e3;       /* teal button */
+    color: #000;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #0097a7;
+    color: #fff;
+}
+
+/* Pie chart */
+canvas {
+    display: block;
+    margin: 20px auto;
