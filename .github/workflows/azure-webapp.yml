@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: exp-tracker-app   # <-- change this to your App Service name
+  AZURE_WEBAPP_NAME:AZURE_WEBAPP_NAME: tracker-f5hqg4b2axhfavfe
+  
   PYTHON_VERSION: '3.12'
 
 jobs:
