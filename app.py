@@ -59,8 +59,9 @@ def edit_expense(expense_id):
     return render_template('edit.html', expense=expense)
 
 # Route to delete an expense
-@app.route('/delete/<int:expense_id>')
+@app.route('/delete/<int:expense_id>', methods=['POST', 'GET'])
 def delete_expense(expense_id):
+    from flask import redirect, url_for
     expense = Expense.query.get_or_404(expense_id)
     db.session.delete(expense)
     db.session.commit()
