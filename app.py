@@ -3,18 +3,20 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from datetime import datetime
 
-# Initialize the Flask app
+# Initialize Flask app
 app = Flask(__name__)
 
 # Database configuration
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{os.path.join(basedir, 'instance', 'expenses.db')}"
+db_path = os.path.join(basedir, "instance")
+os.makedirs(db_path, exist_ok=True)  # Ensure instance folder exists
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{os.path.join(db_path, 'expenses.db')}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Initialize the database
+# Initialize database
 db = SQLAlchemy(app)
 
-# Define the Expense model
+# Expense model
 class Expense(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
@@ -27,47 +29,53 @@ class Expense(db.Model):
 @app.route('/')
 def index():
     expenses = Expense.query.order_by(Expense.date.desc()).all()
-    return render_template('index.html', expenses=expenses)
+    total = sum(e.amount or 0 for e in expenses)
+    return render_template('index.html', expenses=expenses, total=total)
 
-# Route to add a new expense
-@app.route('/add', methods=['POST'])
+# Add expense
+@app.route('/add', methods=['GET', 'POST'])
 def add_expense():
-    category = request.form['category']
-    description = request.form['description']
-    amount = float(request.form['amount'])
-    payment_method = request.form['payment_method']
+    if request.method == 'POST':
+        category = request.form['category']
+        description = request.form['description']
+        amount = float(request.form['amount'])
+        payment_method = request.form['payment_method']
 
-    new_expense = Expense(category=category, description=description, amount=amount, payment_method=payment_method)
-    db.session.add(new_expense)
-    db.session.commit()
-    return redirect(url_for('index'))
-# Route to edit an existing expense
+        new_expense = Expense(
+            category=category,
+            description=description,
+            amount=amount,
+            payment_method=payment_method
+        )
+        db.session.add(new_expense)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('add_expense.html')
+
+# Edit expense
 @app.route('/edit/<int:expense_id>', methods=['GET', 'POST'])
 def edit_expense(expense_id):
     expense = Expense.query.get_or_404(expense_id)
-
     if request.method == 'POST':
-        expense.date = request.form['date']
+        expense.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
         expense.category = request.form['category']
         expense.description = request.form['description']
-        expense.amount = request.form['amount']
+        expense.amount = float(request.form['amount'])
         expense.payment_method = request.form['payment_method']
-
         db.session.commit()
-        return redirect('/')
+        return redirect(url_for('index'))
+    return render_template('edit_expense.html', expense=expense)
 
-    return render_template('edit.html', expense=expense)
-
-# Route to delete an expense
+# Delete expense
 @app.route('/delete/<int:expense_id>', methods=['POST', 'GET'])
 def delete_expense(expense_id):
-    from flask import redirect, url_for
     expense = Expense.query.get_or_404(expense_id)
     db.session.delete(expense)
     db.session.commit()
     return redirect(url_for('index'))
 
-
-# Main entry point
+# Run locally or on Azure
 if __name__ == "__main__":
-    app.run(debug=True)
+    with app.app_context():
+        db.create_all()
+    app.run(host="0.0.0.0", port=5000, debug=True)
