@@ -7,6 +7,34 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
+<style>
+  body {
+    background-color: #f5f8ff;
+    font-family: Arial, sans-serif;
+  }
+  h1 {
+    color: #0052cc;
+    text-align: center;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  table {
+    border: 1px solid #ccc;
+  }
+  th {
+    background-color: #d9e6ff;
+  }
+</style>
+
 <body>
   <nav class="nav">
     <a href="{{ url_for('index') }}">Home</a>
