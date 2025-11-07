@@ -1,13 +1,34 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1>Edit Expense #{{ exp.id }}</h1>
-<form method="post" class="form">
-  <label>Date <input type="date" name="date" value="{{ exp.date.strftime('%Y-%m-%d') }}"></label>
-  <label>Category <input type="text" name="category" value="{{ exp.category }}" required></label>
-  <label>Description <input type="text" name="description" value="{{ exp.description or '' }}"></label>
-  <label>Payment Method <input type="text" name="payment_method" value="{{ exp.payment_method or '' }}"></label>
-  <label>Amount <input type="number" name="amount" step="0.01" value="{{ exp.amount }}" required></label>
-  <button type="submit">Update</button>
-  <a class="btn" href="{{ url_for('index') }}">Cancel</a>
-</form>
-{% endblock %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Expense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Expense</h1>
+        <form method="POST">
+            <label>Date:</label>
+            <input type="date" name="date" value="{{ expense.date }}" required>
+
+            <label>Category:</label>
+            <input type="text" name="category" value="{{ expense.category }}" required>
+
+            <label>Description:</label>
+            <input type="text" name="description" value="{{ expense.description }}" required>
+
+            <label>Amount:</label>
+            <input type="number" step="0.01" name="amount" value="{{ expense.amount }}" required>
+
+            <label>Payment Method:</label>
+            <input type="text" name="payment_method" value="{{ expense.payment_method }}" required>
+
+            <button type="submit">Save Changes</button>
+            <a href="/">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -41,6 +41,22 @@ def add_expense():
     db.session.add(new_expense)
     db.session.commit()
     return redirect(url_for('index'))
+# Route to edit an existing expense
+@app.route('/edit/<int:expense_id>', methods=['GET', 'POST'])
+def edit_expense(expense_id):
+    expense = Expense.query.get_or_404(expense_id)
+
+    if request.method == 'POST':
+        expense.date = request.form['date']
+        expense.category = request.form['category']
+        expense.description = request.form['description']
+        expense.amount = request.form['amount']
+        expense.payment_method = request.form['payment_method']
+
+        db.session.commit()
+        return redirect('/')
+
+    return render_template('edit.html', expense=expense)
 
 # Route to delete an expense
 @app.route('/delete/<int:id>')
