@@ -59,12 +59,13 @@ def edit_expense(expense_id):
     return render_template('edit.html', expense=expense)
 
 # Route to delete an expense
-@app.route('/delete/<int:id>')
-def delete_expense(id):
-    expense = Expense.query.get_or_404(id)
+@app.route('/delete/<int:expense_id>')
+def delete_expense(expense_id):
+    expense = Expense.query.get_or_404(expense_id)
     db.session.delete(expense)
     db.session.commit()
     return redirect(url_for('index'))
+
 
 # Main entry point
 if __name__ == "__main__":
